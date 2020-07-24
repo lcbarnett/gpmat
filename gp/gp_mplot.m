@@ -1,6 +1,6 @@
 function gp_mplot(dat,ptitle,legend,gpcmds,term,scale,fs,stem)
 
-global gpmat_qplot_uniqid;
+global gp_uniqid;
 
 assert(iscell(dat) && ismatrix(dat),'data must be a cell matrix');
 [R,C] = size(dat);
@@ -70,7 +70,7 @@ if nargin < 6, scale  = 1;  end
 if nargin < 7, fs     = []; end
 
 if nargin < 8 || isempty(stem)
-    if gpmat_qplot_uniqid
+    if gp_uniqid
         stem = fullfile(tempdir,['gptmp_' datestr(now,'yyyy-mm-dd-HH:MM:SS:FFF')]);
     else
         stem = fullfile(tempdir,'gptmp');

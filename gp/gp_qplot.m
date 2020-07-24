@@ -1,6 +1,6 @@
 function gp_qplot(x,y,legend,gpcmds,term,scale,fs,stem)
 
-global gpmat_qplot_uniqid;
+global gp_uniqid;
 
 assert(nargin > 1,'Need at least an x and y argument!');
 assert(~isempty(y) && ismatrix(y),'y must be a matrix');
@@ -64,7 +64,7 @@ if nargin < 6, scale  = []; end
 if nargin < 7, fs     = []; end
 
 if nargin < 8 || isempty(stem)
-    if gpmat_qplot_uniqid
+    if gp_uniqid
         stem = fullfile(tempdir,['gptmp_' datestr(now,'yyyy-mm-dd-HH:MM:SS:FFF')]);
     else
         stem = fullfile(tempdir,'gptmp');

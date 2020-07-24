@@ -1,11 +1,10 @@
-global gpmat_root;
 gpmat_root = fileparts(mfilename('fullpath')); % directory containing this file
 
-global gpmat_qplot_uniqid;
-gpmat_qplot_uniqid = false; % if true, append unique (time-sequential) id on temp plot files
+% Globals (used in some functions)
 
-global gp_gnuplot gp_defterm gp_imviewer gp_epsviewer gp_pdfviewer gp_svgviewer gp_eps2pdf gp_imconv gp_pdf2svg gp_pdfcrop gp_pdftoeps gp_pdflatex;
-% Specify for your system!
+global  gp_uniqid gp_gnuplot gp_defterm gp_imviewer gp_epsviewer gp_pdfviewer gp_svgviewer gp_eps2pdf gp_imconv gp_pdf2svg gp_pdfcrop gp_pdftoeps gp_pdflatex;
+
+gp_uniqid    = false; % if true, append unique (time-sequential) id on temp plot files
 gp_gnuplot   = 'gnuplot';
 gp_defterm   = 'x11';
 gp_imviewer  = 'feh';
