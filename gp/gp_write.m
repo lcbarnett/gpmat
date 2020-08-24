@@ -8,6 +8,11 @@ if nargin < 4 || isempty(griddata)
 	griddata = false;
 end
 
+if iscell(precstr)
+	assert(~griddata,'sorry, grid data does not support variable precision specs');
+	assert(isvector(precstr) && length(precstr) == size(dat,2),'variable precision specs must match data columns');
+end
+
 if nargin < 5
 	ch = false;
 else
@@ -68,8 +73,17 @@ fclose(fd);
 
 function gp_write_block(fd,dat,precstr)
 
-r = size(dat,1);
-for i=1:r
-	fprintf(fd,precstr,dat(i,:));
-	fprintf(fd,'\n');
+[r,c] = size(dat);
+if iscell(precstr)
+	for i=1:r
+		for j=1:c
+			fprintf(fd,precstr{j},dat(i,j));
+		end
+		fprintf(fd,'\n');
+	end
+else
+	for i=1:r
+		fprintf(fd,precstr,dat(i,:));
+		fprintf(fd,'\n');
+	end
 end
