@@ -29,6 +29,24 @@ else
 end
 clear user_config
 
+% Globals settings (used in some functions)
+
+global gp_uniqid gp_gnuplot gp_defterm gp_imviewer gp_epsviewer gp_pdfviewer gp_svgviewer gp_eps2pdf gp_imconv gp_pdf2svg gp_pdfcrop gp_pdftoeps gp_pdflatex;
+gp_uniqid    = gp_cfg_uniqid;
+gp_gnuplot   = gp_cfg_gnuplot;
+gp_defterm   = gp_cfg_defterm;
+gp_imviewer  = gp_cfg_imviewer;
+gp_epsviewer = gp_cfg_epsviewer;
+gp_pdfviewer = gp_cfg_pdfviewer;
+gp_svgviewer = gp_cfg_svgviewer;
+gp_eps2pdf   = gp_cfg_eps2pdf;
+gp_pdf2svg   = gp_cfg_pdf2svg;
+gp_imconv    = gp_cfg_imconv;
+gp_pdfcrop   = gp_cfg_pdfcrop;
+gp_pdftoeps  = gp_cfg_pdftoeps;
+gp_pdflatex  = gp_cfg_pdflatex;
+clear gp_cfg_uniqid gp_cfg_gnuplot gp_cfg_defterm gp_cfg_imviewer gp_cfg_epsviewer gp_cfg_pdfviewer gp_cfg_svgviewer gp_cfg_eps2pdf gp_cfg_imconv gp_cfg_pdf2svg gp_cfg_pdfcrop gp_cfg_pdftoeps gp_cfg_pdflatex;
+
 % Add Gpmat root dir + appropriate subdirs to path
 
 addpath(gpmat_root);
