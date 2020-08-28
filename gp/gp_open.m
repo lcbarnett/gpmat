@@ -111,7 +111,8 @@ if nargin < 4 || isempty(fs)
     fs = 12;
 end
 
-gp = fopen([name '.gp'],'w');
+[gp,emsg] = fopen([name '.gp'],'w+t');
+assert(gp ~= -1,'failed to open Gnuplot script file ''%'': %s',[name '.gp'],emsg);
 
 [fdir,fname,fext] = fileparts(name);
 fname = strrep([fname fext],'.','_'); % dots in filenames tend to bork stuff; best avoided

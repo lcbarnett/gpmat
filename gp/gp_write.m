@@ -39,8 +39,8 @@ else
 	end
 end
 
-fd = fopen([name '.dat'],'w');
-assert(fd>0,'failed to open file ''%s.dat'' for writing',name);
+[fd,emsg] = fopen([name '.dat'],'w+t');
+assert(fd ~= -1,'failed to open Gnuplot data file ''%'': %s',[name '.dat'],emsg);
 
 if iscell(dat)
 	for s=1:c
