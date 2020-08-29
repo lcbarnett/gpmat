@@ -6,7 +6,11 @@ if nargin < 2 || isempty(interactive), interactive = false; end
 gpcmd = gp_gnuplot;
 
 assert(exist(gpcmdfile,'file') == 2,'Couldn''t find Gnuplot command file: ''%s''',gpcmdfile);
-cmdstr = [gpcmd ' -raise -persist ' gpcmdfile];
+[gppath,gpname,gpext] = fileparts(gpcmdfile);
+gpscript = [gpname gpext];
+
+cmdstr = ['cd ' gppath ' && ' gpcmd ' -raise -persist ' gpscript]
+
 fprintf('*** running command ''%s''\n',cmdstr);
 if interactive
 	cmdstr = [cmdstr ' -'];
