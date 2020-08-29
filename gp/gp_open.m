@@ -118,7 +118,7 @@ assert(gp ~= -1,'failed to open Gnuplot script file ''%'': %s',[name '.gp'],emsg
 fname = strrep([fname fext],'.','_'); % dots in filenames tend to bork stuff; best avoided
 
 if xterm
-	fprintf(gp,'cd "%s"\n\n',fdir);
+%	fprintf(gp,'cd "%s"\n\n',fdir);
 	fprintf(gp,'set term epslatex standalone color solid size %f,%f %d\n\n',xsize,ysize,fs);
     fprintf(gp,'FNAME = "%s"\n\n',fname);
     fprintf(gp,'set out FNAME.".tex"\n\n');
@@ -127,23 +127,23 @@ else
 	case 'x11'
 		fprintf(gp,'set term x11 enhanced solid persist size %d,%d\n\n',round(xsize),round(ysize));
 	case 'png'
-		fprintf(gp,'cd "%s"\n\n',fdir);
+	%	fprintf(gp,'cd "%s"\n\n',fdir);
 		fprintf(gp,'set term png font "Times,%d" size %d,%d enhanced\n',fs,round(xsize),round(ysize));
 		fprintf(gp,'pngfile = "%s.png"\n',fname);
 		fprintf(gp,'set out pngfile\n\n');
 	case 'svg'
-		fprintf(gp,'cd "%s"\n\n',fdir);
+	%	fprintf(gp,'cd "%s"\n\n',fdir);
 	%	fprintf(gp,'set term svg size %d,%d dynamic mouse standalone font "Times,%d" enhanced\n',round(xsize),round(ysize),fs);
 		fprintf(gp,'set term svg size %d,%d dynamic font "Times,%d" enhanced\n',round(xsize),round(ysize),fs);
 		fprintf(gp,'svgfile = "%s.svg"\n',fname);
 		fprintf(gp,'set out svgfile\n\n');
 	case 'eps'
-		fprintf(gp,'cd "%s"\n\n',fdir);
+	%	fprintf(gp,'cd "%s"\n\n',fdir);
 		fprintf(gp,'set term post eps enhanced color solid size %f,%f font "Times,%d"\n',xsize,ysize,2*fs);
 		fprintf(gp,'epsfile = "%s.eps"\n',fname);
 		fprintf(gp,'set out epsfile\n\n');
 	case 'pdf'
-		fprintf(gp,'cd "%s"\n\n',fdir);
+	%	fprintf(gp,'cd "%s"\n\n',fdir);
 		fprintf(gp,'set term post eps enhanced color solid size %f,%f font "Times,%d"\n',xsize,ysize,2*fs);
 		fprintf(gp,'epsfile = "%s.eps"\n',fname);
 		fprintf(gp,'pdffile = "%s.pdf"\n',fname);
