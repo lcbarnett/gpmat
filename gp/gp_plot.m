@@ -9,7 +9,7 @@ assert(exist(gpcmdfile,'file') == 2,'Couldn''t find Gnuplot command file: ''%s''
 [gppath,gpname,gpext] = fileparts(gpcmdfile);
 gpscript = [gpname gpext];
 
-cmdstr = ['cd ' gppath ' && ' gpcmd ' -raise -persist ' gpscript]
+cmdstr = ['cd ' gppath ' && ' gpcmd ' -raise -persist ' gpscript];
 
 fprintf('*** running command ''%s''\n',cmdstr);
 if interactive

@@ -1,4 +1,4 @@
-function gp_write_matrix(name,dat,griddata,revwrite,precstr)
+function datfile = gp_write_matrix(name,dat,griddata,revwrite,precstr)
 
 if nargin < 3 || isempty(griddata), griddata = true;       end
 if nargin < 4 || isempty(revwrite), revwrite = true;       end
@@ -14,6 +14,8 @@ else
 	assert(ismatrix(dat),'data must be a be 2D matrix or a cell vector of 2D matrices');
 end
 
+[~,fname] = fileparts(name);
+datfile = [fname,'.dat'];
 [fd,emsg] = fopen([name '.dat'],'w+t');
 assert(fd ~= -1,'failed to open Gnuplot data file ''%'': %s',[name '.dat'],emsg);
 

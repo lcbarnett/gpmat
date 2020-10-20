@@ -1,4 +1,4 @@
-function gp_gridwrite(name,dat,precstr)
+function datfile = gp_gridwrite(name,dat,precstr)
 
 if nargin < 3 || isempty(precstr)
 	precstr = '\t%8d\t%8d\t%24.12f\n';
@@ -8,6 +8,8 @@ if iscell(dat)
 	assert(isvector(dat),'data must be a cell vector');
 end
 
+[~,fname] = fileparts(name);
+datfile = [fname,'.dat'];
 [fd,emsg] = fopen([name '.dat'],'w+t');
 assert(fd ~= -1,'failed to open Gnuplot data file ''%'': %s',[name '.dat'],emsg);
 

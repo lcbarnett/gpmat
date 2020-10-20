@@ -1,4 +1,4 @@
-function gp_write(name,dat,precstr,griddata,colhead)
+function datfile = gp_write(name,dat,precstr,griddata,colhead)
 
 if nargin < 3 || isempty(precstr)
 	precstr = ' %24.16f';
@@ -39,6 +39,8 @@ else
 	end
 end
 
+[~,fname] = fileparts(name);
+datfile = [fname,'.dat'];
 [fd,emsg] = fopen([name '.dat'],'w+t');
 assert(fd ~= -1,'failed to open Gnuplot data file ''%'': %s',[name '.dat'],emsg);
 
