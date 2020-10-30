@@ -14,17 +14,17 @@
 global gpmat_root
 gpmat_root = fileparts(mfilename('fullpath')); % directory containing this file
 
-fprintf('[Gpmat startup] Initialising toolbox\n');
+fprintf('[gpmat startup] Initialising toolbox\n');
 
 % Set configuration options: look first for user-local configuration file in
 % MATLAB preferences directory, else run default
 
 user_config = fullfile(prefdir,'gpmat_config.m');
 if exist(user_config,'file') == 2
-	fprintf('[Gpmat startup] Setting user-local configuration options\n');
+	fprintf('[gpmat startup] Setting user-local configuration options\n');
 	run(user_config);
 else
-	fprintf('[Gpmat startup] Setting default configuration options\n');
+	fprintf('[gpmat startup] Setting default configuration options\n');
 	config;
 end
 clear user_config
@@ -58,6 +58,6 @@ if include_testing
 end
 clear include_testing
 
-fprintf('[Gpmat startup] Paths set\n');
+fprintf('[gpmat startup] Paths set\n');
 
-fprintf('[Gpmat startup] Initialisation complete (you may re-run ''startup'' at any time)\n');
+fprintf('[gpmat startup] Initialisation complete (you may re-run ''startup'' at any time)\n');
