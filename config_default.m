@@ -2,9 +2,8 @@
 % Gpmat Toolbox default configuration script
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% This is the default Gpmat configuration script. To set user-local configuration
-% options, copy this file to "gpmat_config.m" in your MATLAB preferences directory
-% (output of the 'prefdir' command) and customise.
+% This is the default gpmat configuration script. To set user configuration options,
+% copy this file to "config.m" in this directory and edit to taste.
 %
 % The configuration script is run by 'startup'; any of these configuration options
 % may be overriden on the command line before 'startup' is called.
