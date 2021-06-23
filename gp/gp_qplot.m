@@ -70,6 +70,7 @@ if nargin < 8 || isempty(stem)
         stem = fullfile(tempdir,'gptmp');
     end
 end
+[~,name] = fileparts(stem);
 
 % Write the data
 
@@ -81,7 +82,7 @@ gp = gp_open(stem,term,scale,fs);
 
 % Write the Gnuplot command file
 
-fprintf(gp,'datfile = "%s.dat"\n',stem);
+fprintf(gp,'datfile = "%s.dat"\n',name);
 fprintf(gp,'set xlabel "x"\n');
 fprintf(gp,'set ylabel "y" norot\n');
 fprintf(gp,gp_pre);

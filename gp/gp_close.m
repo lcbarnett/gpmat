@@ -3,7 +3,7 @@ function gp_close(gp,name,term,plotit,interactive)
 global gp_gnuplot gp_defterm gp_imviewer gp_epsviewer gp_pdfviewer gp_svgviewer gp_eps2pdf gp_imconv gp_pdf2svg gp_pdfcrop gp_pdftoeps gp_pdflatex;
 
 if nargin < 2 || isempty(name)
-	name = [tempdir filesep 'gplot'];
+	name = fullfile(tempdir,'gplot');
 	fprintf(2,'WARNING: no plot filename specified - defaulting to ''%s''\n',name);
 end
 
