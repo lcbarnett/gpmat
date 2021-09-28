@@ -23,10 +23,10 @@ fprintf('[gpmat startup] Initialising toolbox\n');
 % up the actual filename in root directory listing.
 
 if isempty(dir('config.m'))
-	fprintf('[MVGC2 startup] Setting default configuration options\n');
+	fprintf('[gpmat startup] Setting default configuration options\n');
 	config_default;
 else
-	fprintf('[MVGC2 startup] Setting user configuration options\n');
+	fprintf('[gpmat startup] Setting user configuration options\n');
 	config;
 end
 
