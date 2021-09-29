@@ -9,11 +9,9 @@ assert(exist(gpcmdfile,'file') == 2,'Couldn''t find Gnuplot command file: ''%s''
 [gppath,gpname,gpext] = fileparts(gpcmdfile);
 gpscript = [gpname gpext];
 
-% cmdstr = ['cd ' gppath ' && ' gpcmd ' -raise -persist ' gpscript];
-%
-% Linux: clearing (Matlab's) LD_LIBRARY_PATH seems to fix a lot of library nonsense
+% Linux: clearing Matlab's LD_LIBRARY_PATH seems to fix a lot of library nonsense
 % Should probably retrieve your system's original library path, but that's a pain...
-% Not sure how this pans out on non-Linux systems.
+% Not sure how this issue pans out on non-Linux systems.
 
 if isunix
 	cmdstr = ['cd ' gppath ' && LD_LIBRARY_PATH= ' gpcmd ' -raise -persist ' gpscript];
