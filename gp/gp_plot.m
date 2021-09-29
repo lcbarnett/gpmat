@@ -11,10 +11,15 @@ gpscript = [gpname gpext];
 
 % cmdstr = ['cd ' gppath ' && ' gpcmd ' -raise -persist ' gpscript];
 %
-% Clearing (Matlab's) LD_LIBRARY_PATH seems to fix a lot of library nonsense
+% Linux: clearing (Matlab's) LD_LIBRARY_PATH seems to fix a lot of library nonsense
 % Should probably retrieve your system's original library path, but that's a pain...
+% Not sure how this pans out on non-Linux systems.
 
-cmdstr = ['cd ' gppath ' && ' 'LD_LIBRARY_PATH= ' gpcmd ' -raise -persist ' gpscript];
+if isunix
+	cmdstr = ['cd ' gppath ' && LD_LIBRARY_PATH= ' gpcmd ' -raise -persist ' gpscript];
+else
+	cmdstr = ['cd ' gppath ' && ' gpcmd ' -raise -persist ' gpscript];
+end
 
 fprintf('*** running command ''%s''\n',cmdstr);
 if interactive
