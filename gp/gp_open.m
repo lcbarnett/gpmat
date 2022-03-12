@@ -32,78 +32,53 @@ dfsch = 1/2;  % default fraction of screen height
 xsadj = 0.97; % leave a little space for desktop furniture
 ysadj = 0.94; % leave a little space for desktop furniture
 
-if nargin < 3 || isempty(scale), scale = 1; end
-
-assert(isnumeric(scale) && isvector(scale),'scale must be a scalar or 2-vector');
-
 xscreen  = xsadj*screensize(1); % plot window max screen width
 yscreen  = ysadj*screensize(2); % plot window max screen height
 dyscreen = dfsch*screensize(2); % plot window default screen height
 
-if     length(scale) == 1
-	if     scale > 0 % scale default height, default x/y aspect ratio
-		if isinf(scale)
-			ysize = yscreen;
-		else
-			ysize = scale*dyscreen;
-		end
-	elseif scale < 0 % -scale is y-pixels; use default x/y aspect ratio
-		if isinf(scale)
-			ysize = yscreen;
-		else
-			ysize = -scale;
-		end
-	else
-		error('bad scale parameters')
-	end
-	xsize = darat*ysize; % apply aspect ratio
-elseif length(scale) == 2
-	if     scale(1) > 0 && scale(2) > 0  %  scale(1) is scale,     scale(2) is x/y aspect ratio
-		if isinf(scale(1))
-			ysize = yscreen;
-		else
-			ysize = scale(1)*dyscreen;
-		end
-		if isinf(scale(2))
-			xsize = xscreen;
-		else
-			xsize = scale(2)*ysize;
-		end
-	elseif scale(1) < 0 && scale(2) > 0  % -scale(1) is y-pixels,  scale(2) x/y aspect ratio
-		if isinf(scale(1))
-			ysize = yscreen;
-		else
-			ysize = -scale(1);
-		end
-		xsize = scale(2)*ysize;
-	elseif scale(1) < 0 && scale(2) < 0  % -scale(1) is x-pixels, -scale(2) is y-pixels
-		if isinf(scale(1))
-			xsize = xscreen;
-		else
-			xsize = -scale(1);
-		end
-		if isinf(scale(2))
-			ysize = yscreen;
-		else
-			ysize = -scale(2);
-		end
-	else
-		error('bad scale parameters')
-	end
+if nargin < 3 || isempty(scale), scale = 1; end
+
+assert(isnumeric(scale) && isvector(scale),'scale must be a scalar or 2-vector');
+
+% Plot scaling:
+%
+% scale(1) is the plot scaling factor, and scale(2) the horizontal/vertical
+% aspect ratio (if scale is a scalar, then the aspect ratio is set to the
+% default value 'darat'). Vertical plot size is set to the default 'dyscreen'
+% scaled by scale(1). The aspect ratio scale(2) is then applied to obtain the
+% horizontal plot size.
+%
+% A special case is scale(1) == Inf; then the vertical plot size is set to the
+% maximum that will fit vertically on screen, and the aspect ratio scale(2) is
+% applied as before.
+%
+% Another special case is scale(2) == Inf; then the horizontal size is set to
+% the maximum that will fit horizontally on screen.
+
+if length(scale) == 1
+	scale(2) = darat;
+end
+
+if isinf(scale(1))
+	ysize = yscreen;
 else
-	error('scale must be a scalar or 2-vector');
+	ysize = scale(1)*dyscreen;
+end
+
+if isinf(scale(2))
+	xsize = xscreen;
+else
+	xsize = scale(2)*ysize;
 end
 
 if xsize >  xscreen
-	fprintf(2,'WARNING: plot bigger than screen horizontally!\n');
+	fprintf(2,'WARNING: plot bigger than screen horizontally - adjusting!\n');
 	xsize = xscreen;
-
 end
 
 if ysize > yscreen
-	fprintf(2,'WARNING: plot bigger than screen vertically!\n');
+	fprintf(2,'WARNING: plot bigger than screen vertically - adjusting!\n');
 	ysize = yscreen;
-
 end
 
 if nargin < 4 || isempty(fs)
