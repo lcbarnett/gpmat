@@ -14,19 +14,18 @@ end
 term = lower(term);
 xterm = isequal(term([1 2]),'x-');
 
-oldunits = get(0,'units');
+% Different terminals use different units...
 
+global gp_screensize
+assert(~isempty(gp_screensize),'Haven''t got screen size! (Did you run ''startup''?)');
 if xterm
-	set(0,'units','inches');
+	screensize = gp_screensize.inches;
 else
 	switch term
-		case {'xll', 'png','svg','wxt'}, set(0,'units','pixels');
-		case {'pdf','eps'             }, set(0,'units','inches');
+		case {'x11', 'png','svg','wxt'}, screensize = gp_screensize.pixels;
+		case {'pdf','eps'             }, screensize = gp_screensize.inches;
 	end
 end
-screensize = get(0,'screensize');
-screensize = screensize([3 4]); % screen size in pixels/inches
-set(0,'units',oldunits);
 
 darat = 4/3;  % default x/y aspect ratio
 dfsch = 1/2;  % default fraction of screen height

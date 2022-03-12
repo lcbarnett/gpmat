@@ -59,6 +59,10 @@ if include_testing
 end
 clear include_testing
 
+fprintf('[gpmat startup] Getting screen size\n');
+global gp_screensize
+gp_screensize = gp_get_screensize('[gpmat startup] ');
+
 fprintf('[gpmat startup] Paths set\n');
 
 fprintf('[gpmat startup] Initialisation complete (you may re-run ''startup'' at any time)\n');
