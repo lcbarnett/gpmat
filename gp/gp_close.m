@@ -100,6 +100,16 @@ else
 		if plotit == 1
 			fprintf(2,'WARNING: No image file!');
 		end
+	case 'wxt'
+		fprintf(gp,'\nset term pop\n');
+		if plotit == 1
+			fprintf(2,'WARNING: No image file!');
+		end
+	case 'qt'
+		fprintf(gp,'\nset term pop\n');
+		if plotit == 1
+			fprintf(2,'WARNING: No image file!');
+		end
 	case 'png'
 		fprintf(gp,'\nset out\n');
 		fprintf(gp,'set term pop\n\n');
@@ -144,11 +154,6 @@ else
 		end
 		if interactive
 			fprintf(2,'WARNING: No interactive mode!');
-		end
-	case 'wxt'
-		fprintf(gp,'\nset term pop\n');
-		if plotit == 1
-			fprintf(2,'WARNING: No image file!');
 		end
 	otherwise
 		error('gp_plot: unknown terminal type');

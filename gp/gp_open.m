@@ -17,13 +17,13 @@ xterm = isequal(term([1 2]),'x-');
 % Different terminals use different units...
 
 global gp_screensize
-assert(~isempty(gp_screensize),'Haven''t got screen size! (Did you run ''startup''?)');
+assert(~isempty(gp_screensize),'Haven''t got screen size! (Did you run gpmat''s ''startup.m''?)');
 if xterm
-	screensize = gp_screensize.inches;
+	screensize = gp_screensize.pixels/gp_screensize.dpi; % inches
 else
 	switch term
-		case {'x11', 'png','svg','wxt'}, screensize = gp_screensize.pixels;
-		case {'pdf','eps'             }, screensize = gp_screensize.inches;
+		case {'x11', 'png','svg','wxt','qt'}, screensize = gp_screensize.pixels;
+		case {'pdf','eps'                  }, screensize = gp_screensize.pixels/gp_screensize.dpi; % inches
 	end
 end
 
@@ -43,17 +43,18 @@ assert(isnumeric(scale) && isvector(scale),'scale must be a scalar or 2-vector')
 % Plot scaling:
 %
 % scale(1) is the plot scaling factor, and scale(2) the horizontal/vertical
-% aspect ratio (if scale is a scalar, then the aspect ratio is set to the
+% aspect ratio (if 'scale' is a scalar, then the aspect ratio is set to the
 % default value 'darat'). Vertical plot size is set to the default 'dyscreen'
 % scaled by scale(1). The aspect ratio scale(2) is then applied to obtain the
 % horizontal plot size.
 %
-% A special case is scale(1) == Inf; then the vertical plot size is set to the
+% Special cases: if scale(1) == Inf; then the vertical plot size is set to the
 % maximum that will fit vertically on screen, and the aspect ratio scale(2) is
-% applied as before.
-%
-% Another special case is scale(2) == Inf; then the horizontal size is set to
-% the maximum that will fit horizontally on screen.
+% applied as before. If scale(2) == Inf; then the horizontal size is set to
+% the maximum that will fit horizontally on screen. If bothe scale(1) and scale(2)
+% are == Inf, then both width and height are set to the maximum that will fit on
+% screen. Note: the "maximum" screen width and height are slightly shrunken to
+% accommodate desktop furniture (e.g. taskbars, etc.)
 
 if length(scale) == 1
 	scale(2) = darat;
@@ -102,6 +103,10 @@ else
 	switch term
 	case 'x11'
 		fprintf(gp,'set term x11 enhanced solid persist size %d,%d\n\n',round(xsize),round(ysize));
+	case 'wxt'
+		fprintf(gp,'set term wxt size %d,%d enhanced font "Times,%d" persist\n\n',round(xsize),round(ysize),fs);
+	case 'qt'
+		fprintf(gp,'set term qt size %d,%d enhanced font "Times,%d" persist\n\n',round(xsize),round(ysize),fs);
 	case 'png'
 	%	fprintf(gp,'cd "%s"\n\n',fdir);
 		fprintf(gp,'set term png font "Times,%d" size %d,%d enhanced\n',fs,round(xsize),round(ysize));
@@ -124,8 +129,6 @@ else
 		fprintf(gp,'epsfile = "%s.eps"\n',fname);
 		fprintf(gp,'pdffile = "%s.pdf"\n',fname);
 		fprintf(gp,'set out epsfile\n\n');
-	case 'wxt'
-		fprintf(gp,'set term wxt size %d,%d enhanced font "Times,%d" persist\n\n',round(xsize),round(ysize),fs);
 	case ''
 		% do nothing %
 	otherwise

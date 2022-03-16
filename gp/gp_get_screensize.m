@@ -1,47 +1,91 @@
-function s = gp_get_screensize(pfx)
+function ss = gp_get_screensize(pfx)
+
+% Get physical screen size in pixels, and resolution in DPI
+%
+% All bets are off for multiple displays!
 
 if nargin < 1 || isempty(pfx), pfx = ''; end
 
 if isunix
-	[status,cmdout] = system('xdpyinfo | grep dimensions');
-	if status ~= 0 % command failed
-		fprintf(2,'%sWARNING: system screen size query failed; using\n',pfx);
-		fprintf(2,'%spossibly inaccurate Matlab screen size query\n',pfx);
-		s = mat_get_screensize;
-	else
+
+	[status,cmdout] = system('xdpyinfo | grep dimensions'); % get pixels
+	if status == 0 % success
 		subs = extract(cmdout,digitsPattern);
-		s.pixels = [str2double(subs{1}) str2double(subs{2})];
-		s.inches = [str2double(subs{3}) str2double(subs{4})]/25.4;
+		ss.pixels = [str2double(subs{1}) str2double(subs{2})];
+		[status,cmdout] = system('xdpyinfo | grep resolution'); % get dpi
+		if status == 0 % success
+			subs = extract(cmdout,digitsPattern);
+			ss.dpi = str2double(subs{1});
+		else
+			fprintf(2,'%sWARNING: system screen size query failed\n',pfx);
+			ss = get_screensize(pfx);
+		end
+	else
+		fprintf(2,'%sWARNING: system screen size query failed\n',pfx);
+		ss = get_screensize(pfx);
 	end
+
 elseif ispc
-	fprintf(2,'%sWARNING: using possibly inaccurate Matlab screen size query\n',pfx);
-	fprintf(2,'%sIf anyone knows how to get the screen size accurately in\n',pfx);
-	fprintf(2,'%sWindows please let the maintainer know!\n',pfx);
-	s = mat_get_screensize;
+
+	fprintf(2,'%sWARNING: If anyone knows how to get the physical screen size\n',pfx);
+	fprintf(2,'%saccurately in MS Windows please let the maintainer know!\n',pfx);
+	ss = get_screensize(pfx);
+
 elseif ismac
-	fprintf(2,'%sWARNING: using possibly inaccurate Matlab screen size query\n',pfx);
-	fprintf(2,'%sIf anyone knows how to get the screen size accurately in\n',pfx);
-	fprintf(2,'%smacOS please let the maintainer know!\n',pfx);
-	s = mat_get_screensize;
+
+	fprintf(2,'%sWARNING: If anyone knows how to get the physical screen size\n',pfx);
+	fprintf(2,'%accurately in macOS please let the maintainer know!\n',pfx);
+	ss = get_screensize(pfx);
+
 else
-	fprintf(2,'%sWARNING: Failed to identify OS; using possibly inaccurate\n',pfx);
-	fprintf(2,'%sMatlab screen size query\n',pfx);
-	s = mat_get_screensize;
-end
 
-fprintf('%sScreen size = %dx%d pixels (%.2fx%.2f inches)\n',pfx,s.pixels(1),s.pixels(2),s.inches(1),s.inches(2));
+	fprintf(2,'%sWARNING: Failed to identify OS\n',pfx);
+	ss = get_screensize(pfx);
 
 end
 
-function s = mat_get_screensize
+fprintf('%sScreen size = %dx%d pixels, %d dpi\n',pfx,ss.pixels(1),ss.pixels(2),ss.dpi);
 
-	oldunits = get(0,'units');
-	set(0,'units','pixels');
-	screensize = get(0,'screensize');
-	s.pixels = screensize([3 4]); % screen size in pixels/inches
-	set(0,'units','inches');
-	screensize = get(0,'screensize');
-	s.inches = screensize([3 4]); % screen size in pixels/inches
-	set(0,'units',oldunits);
+end
+
+function ss = get_screensize(pfx)
+
+	if usejava('awt') % Java method (experimental
+
+		% Not sure if this works correctly; it is "undocumented Matlab" and
+		% I haven't been able to test it properly. See
+		%
+		% https://undocumentedmatlab.com/articles/working-with-non-standard-dpi-displays
+
+		fprintf(2,'%sUsing experimental Java screen size query\n',pfx);
+
+		dtk = java.awt.Toolkit.getDefaultToolkit;
+		jss = dtk.getScreenSize;
+		ss.pixels = [jss.getWidth jss.getHeight];
+		ss.dpi = dtk.getScreenResolution;
+
+	else % Matlab method (possibly bogus)
+
+		% The problem is that Matlab does not always report the PHYSICAL
+		% screen size (which Gnuplot will use). This is in particular a
+		% problem if Matlab is using software GL rendering, and (reportedly)
+		% on MacOS with some Retina displays. Thus this function may return
+		% an incorrect result. See
+		%
+		% https://uk.mathworks.com/help/matlab/ref/matlab.ui.root-properties.html
+		%
+		% In particular the sections on CreenSize and ScreenPixelsPerInch (insane).
+
+		fprintf(2,'%sUsing potentially inaccurate Matlab screen size query\n',pfx);
+		fprintf(2,'%ss(If JVM is running you may get a better result)\n',pfx);
+
+		oldunits = get(0,'units');
+		set(0,'units','pixels');
+		gr = groot; % Matlab graphics root object
+		ss.pixels = gr.ScreenSize([3 4]);
+		ss.dpi = gr.ScreenPixelsPerInch;
+		set(0,'units',oldunits);
+
+	end
 
 end
