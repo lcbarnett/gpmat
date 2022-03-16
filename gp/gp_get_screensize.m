@@ -44,8 +44,6 @@ else
 
 end
 
-fprintf('%sScreen size = %dx%d pixels, %d dpi\n',pfx,ss.pixels(1),ss.pixels(2),ss.dpi);
-
 end
 
 function ss = get_screensize(pfx)

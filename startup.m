@@ -32,21 +32,22 @@ end
 
 % Globals settings (used in some functions)
 
-global gp_uniqid gp_gnuplot gp_defterm gp_imviewer gp_epsviewer gp_pdfviewer gp_svgviewer gp_eps2pdf gp_imconv gp_pdf2svg gp_pdfcrop gp_pdftoeps gp_pdflatex;
-gp_uniqid    = gp_cfg_uniqid;
-gp_gnuplot   = gp_cfg_gnuplot;
-gp_defterm   = gp_cfg_defterm;
-gp_imviewer  = gp_cfg_imviewer;
-gp_epsviewer = gp_cfg_epsviewer;
-gp_pdfviewer = gp_cfg_pdfviewer;
-gp_svgviewer = gp_cfg_svgviewer;
-gp_eps2pdf   = gp_cfg_eps2pdf;
-gp_pdf2svg   = gp_cfg_pdf2svg;
-gp_imconv    = gp_cfg_imconv;
-gp_pdfcrop   = gp_cfg_pdfcrop;
-gp_pdftoeps  = gp_cfg_pdftoeps;
-gp_pdflatex  = gp_cfg_pdflatex;
-clear gp_cfg_uniqid gp_cfg_gnuplot gp_cfg_defterm gp_cfg_imviewer gp_cfg_epsviewer gp_cfg_pdfviewer gp_cfg_svgviewer gp_cfg_eps2pdf gp_cfg_imconv gp_cfg_pdf2svg gp_cfg_pdfcrop gp_cfg_pdftoeps gp_cfg_pdflatex;
+global gp_uniqid gp_gnuplot gp_defterm gp_imviewer gp_epsviewer gp_pdfviewer gp_svgviewer gp_eps2pdf gp_imconv gp_pdf2svg gp_pdfcrop gp_pdftoeps gp_pdflatex gp_screensize
+gp_uniqid     = gp_cfg_uniqid;
+gp_gnuplot    = gp_cfg_gnuplot;
+gp_defterm    = gp_cfg_defterm;
+gp_imviewer   = gp_cfg_imviewer;
+gp_epsviewer  = gp_cfg_epsviewer;
+gp_pdfviewer  = gp_cfg_pdfviewer;
+gp_svgviewer  = gp_cfg_svgviewer;
+gp_eps2pdf    = gp_cfg_eps2pdf;
+gp_pdf2svg    = gp_cfg_pdf2svg;
+gp_imconv     = gp_cfg_imconv;
+gp_pdfcrop    = gp_cfg_pdfcrop;
+gp_pdftoeps   = gp_cfg_pdftoeps;
+gp_pdflatex   = gp_cfg_pdflatex;
+gp_screensize = gp_cfg_screensize;
+clear gp_cfg_uniqid gp_cfg_gnuplot gp_cfg_defterm gp_cfg_imviewer gp_cfg_epsviewer gp_cfg_pdfviewer gp_cfg_svgviewer gp_cfg_eps2pdf gp_cfg_imconv gp_cfg_pdf2svg gp_cfg_pdfcrop gp_cfg_pdftoeps gp_cfg_pdflatex gp_cfg_screensize
 
 % Add Gpmat root dir + appropriate subdirs to path
 
@@ -59,9 +60,11 @@ if include_testing
 end
 clear include_testing
 
-fprintf('[gpmat startup] Getting screen size\n');
-global gp_screensize
-gp_screensize = gp_get_screensize('[gpmat startup] ');
+if isempty(gp_screensize)
+	fprintf('[gpmat startup] Getting screen size\n');
+	gp_screensize = gp_get_screensize('[gpmat startup] ');
+end
+fprintf('[gpmat startup] Screen size = %dx%d pixels, %d dpi\n',gp_screensize.pixels(1),gp_screensize.pixels(2),gp_screensize.dpi);
 
 fprintf('[gpmat startup] Paths set\n');
 
