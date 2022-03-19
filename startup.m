@@ -16,11 +16,15 @@ gpmat_root = fileparts(mfilename('fullpath')); % directory containing this file
 
 fprintf('[gpmat startup] Initialising toolbox\n');
 
-% Set configuration options: look first for config.m in this directory, else run default
-
-% if exist('config.m','file') == 2 is unreliable, as there might already be
-% a config.m on the PATH, which 'exist' will pick up!!! Thus we simply look
-% up the actual filename in root directory listing.
+% Set configuration options: look first for config.m in this directory, else run
+% config_default.m
+%
+% Note that:
+%
+%     if exist('config.m','file') == 2
+%
+% is unreliable, as 'exist' will pick up ANY config.m which happens to be on the
+% PATH. Thus we simply look up the actual filename in the root directory listing.
 
 if isempty(dir('config.m'))
 	fprintf('[gpmat startup] Setting default configuration options\n');
@@ -30,10 +34,12 @@ else
 	config;
 end
 
-% Globals settings (used in some functions)
+% Global configuration settings
 
-global gp_uniqid gp_gnuplot gp_defterm gp_imviewer gp_epsviewer gp_pdfviewer gp_svgviewer gp_eps2pdf gp_imconv gp_pdf2svg gp_pdfcrop gp_pdftoeps gp_pdflatex gp_screensize
+global gp_testing gp_uniqid gp_screensize gp_gnuplot gp_defterm gp_imviewer gp_epsviewer gp_pdfviewer gp_svgviewer gp_eps2pdf gp_imconv gp_pdf2svg gp_pdfcrop gp_pdftoeps gp_pdflatex
+gp_testing    = gp_cfg_testing;
 gp_uniqid     = gp_cfg_uniqid;
+gp_screensize = gp_cfg_screensize;
 gp_gnuplot    = gp_cfg_gnuplot;
 gp_defterm    = gp_cfg_defterm;
 gp_imviewer   = gp_cfg_imviewer;
@@ -46,19 +52,16 @@ gp_imconv     = gp_cfg_imconv;
 gp_pdfcrop    = gp_cfg_pdfcrop;
 gp_pdftoeps   = gp_cfg_pdftoeps;
 gp_pdflatex   = gp_cfg_pdflatex;
-gp_screensize = gp_cfg_screensize;
-clear gp_cfg_uniqid gp_cfg_gnuplot gp_cfg_defterm gp_cfg_imviewer gp_cfg_epsviewer gp_cfg_pdfviewer gp_cfg_svgviewer gp_cfg_eps2pdf gp_cfg_imconv gp_cfg_pdf2svg gp_cfg_pdfcrop gp_cfg_pdftoeps gp_cfg_pdflatex gp_cfg_screensize
+clear gp_cfg_testing gp_cfg_uniqid gp_cfg_screensize gp_cfg_gnuplot gp_cfg_defterm gp_cfg_imviewer gp_cfg_epsviewer gp_cfg_pdfviewer gp_cfg_svgviewer gp_cfg_eps2pdf gp_cfg_imconv gp_cfg_pdf2svg gp_cfg_pdfcrop gp_cfg_pdftoeps gp_cfg_pdflatex
 
 % Add Gpmat root dir + appropriate subdirs to path
 
 addpath(gpmat_root);
 addpath(fullfile(gpmat_root,'gp'));
 addpath(fullfile(gpmat_root,'demos'));
-
-if include_testing
+if gp_testing
 	addpath(genpath(fullfile(gpmat_root,'testing')));
 end
-clear include_testing
 
 if isempty(gp_screensize)
 	fprintf('[gpmat startup] Getting screen size\n');

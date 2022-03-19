@@ -48,7 +48,7 @@ end
 
 function ss = get_screensize(pfx)
 
-	if usejava('awt') % Java method (experimental
+	if usejava('awt') % Java method (experimental)
 
 		% Not sure if this works correctly; it is "undocumented Matlab" and
 		% I haven't been able to test it properly. See
@@ -75,7 +75,7 @@ function ss = get_screensize(pfx)
 		% In particular the sections on CreenSize and ScreenPixelsPerInch (insane).
 
 		fprintf(2,'%sUsing potentially inaccurate Matlab screen size query\n',pfx);
-		fprintf(2,'%ss(If JVM is running you may get a better result)\n',pfx);
+		fprintf(2,'%s(If JVM is running you may get a better result)\n',pfx);
 
 		oldunits = get(0,'units');
 		set(0,'units','pixels');
