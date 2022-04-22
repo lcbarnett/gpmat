@@ -18,7 +18,7 @@
 
 gp_cfg_testing     = false;     % include test directory?
 gp_cfg_uniqid      = false;     % append unique (time-sequential) id on temp plot files?
-gp_cfg_screensize  = [];        % Screen size: vector [width, height, DPI] (pixels) - if empty, calculated automatically in 'startup.m'
+gp_cfg_screensize  = [];        % Screen size: if empty, calculated automatically in 'startup.m'; else supply as, e.g., gp_cfg_screensize.pixels = [2560 1440]; gp_cfg_screensize.dpi = 96;
 gp_cfg_gnuplot     = 'gnuplot'; % Gnuplot executable
 gp_cfg_defterm     = '';        % Default Gnuplot terminal
 

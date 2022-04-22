@@ -19,11 +19,11 @@ xterm = isequal(term([1 2]),'x-');
 global gp_screensize
 assert(~isempty(gp_screensize),'Haven''t got screen size! (Did you run gpmat''s ''startup.m''?)');
 if xterm
-	screensize = gp_screensize.pixels/gp_screensize.dpi; % inches
+	screensize = gp_screensize.pixels./gp_screensize.dpi; % inches
 else
 	switch term
 		case {'x11', 'png','svg','wxt','qt'}, screensize = gp_screensize.pixels;
-		case {'pdf','eps'                  }, screensize = gp_screensize.pixels/gp_screensize.dpi; % inches
+		case {'pdf','eps'                  }, screensize = gp_screensize.pixels./gp_screensize.dpi; % inches
 	end
 end
 

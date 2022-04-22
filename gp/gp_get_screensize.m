@@ -6,26 +6,7 @@ function ss = gp_get_screensize(pfx)
 
 if nargin < 1 || isempty(pfx), pfx = ''; end
 
-if isunix
-
-	[status,cmdout] = system('xdpyinfo | grep dimensions'); % get pixels
-	if status == 0 % success
-		subs = extract(cmdout,digitsPattern);
-		ss.pixels = [str2double(subs{1}) str2double(subs{2})];
-		[status,cmdout] = system('xdpyinfo | grep resolution'); % get dpi
-		if status == 0 % success
-			subs = extract(cmdout,digitsPattern);
-			ss.dpi = str2double(subs{1});
-		else
-			fprintf(2,'%sWARNING: system screen size query failed\n',pfx);
-			ss = get_screensize(pfx);
-		end
-	else
-		fprintf(2,'%sWARNING: system screen size query failed\n',pfx);
-		ss = get_screensize(pfx);
-	end
-
-elseif ispc
+if ispc
 
 	fprintf(2,'%sWARNING: If anyone knows how to get the physical screen size\n',pfx);
 	fprintf(2,'%saccurately in MS Windows please let the maintainer know!\n',pfx);
@@ -36,6 +17,30 @@ elseif ismac
 	fprintf(2,'%sWARNING: If anyone knows how to get the physical screen size\n',pfx);
 	fprintf(2,'%accurately in macOS please let the maintainer know!\n',pfx);
 	ss = get_screensize(pfx);
+
+elseif isunix
+
+	[status,cmdout] = system('xdpyinfo | grep dimensions'); % get pixels
+	if status == 0 % success
+		subs = extract(cmdout,digitsPattern);
+		ss.pixels = [str2double(subs{1}) str2double(subs{2})];
+		[status,cmdout] = system('xdpyinfo | grep resolution'); % get dpi
+		if status == 0 % success
+			subs = extract(cmdout,digitsPattern);
+			if length(subs) == 1
+				ss.dpi = str2double(subs{1});
+			else
+				ss.dpi(1) = str2double(subs{1});
+				ss.dpi(2) = str2double(subs{2});
+			end
+		else
+			fprintf(2,'%sWARNING: system screen size query failed\n',pfx);
+			ss = get_screensize(pfx);
+		end
+	else
+		fprintf(2,'%sWARNING: system screen size query failed\n',pfx);
+		ss = get_screensize(pfx);
+	end
 
 else
 

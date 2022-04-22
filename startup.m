@@ -63,11 +63,20 @@ if gp_testing
 	addpath(genpath(fullfile(gpmat_root,'testing')));
 end
 
+% Screen size and resolution
+
 if isempty(gp_screensize)
 	fprintf('[gpmat startup] Getting screen size\n');
 	gp_screensize = gp_get_screensize('[gpmat startup] ');
 end
-fprintf('[gpmat startup] Screen size = %dx%d pixels, %d dpi\n',gp_screensize.pixels(1),gp_screensize.pixels(2),gp_screensize.dpi);
+if isscalar(gp_screensize.dpi)
+	fprintf('[gpmat startup] Screen size = %dx%d pixels, DPI = %d\n',   gp_screensize.pixels(1),gp_screensize.pixels(2),gp_screensize.dpi);
+	gp_screensize.dpi(2) = gp_screensize.dpi;    % set vertical resolution same as horizontal
+else
+	fprintf('[gpmat startup] Screen size = %dx%d pixels, DPI = %dx%d\n',gp_screensize.pixels(1),gp_screensize.pixels(2),gp_screensize.dpi(1),gp_screensize.dpi(2));
+end
+gp_screensize.pixels = gp_screensize.pixels(:)'; % ensure row vector
+gp_screensize.dpi    = gp_screensize.dpi(:)';    % ensure row vector
 
 fprintf('[gpmat startup] Paths set\n');
 
