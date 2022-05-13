@@ -147,6 +147,18 @@ else
 		fprintf(gp,'\nset out\n');
 		fprintf(gp,'set term pop\n\n');
 		fprintf(gp,'system "%s ".(epsfile)\n',gp_eps2pdf);
+		fprintf(gp,'system "rm ".(epsfile)\n');
+		if plotit > 1
+			fprintf(gp,'system "%s ".(pdffile)." &"\n',gp_pdfviewer);
+		else
+			fprintf(gp,'# system "%s ".(pdffile)." &"\n',gp_pdfviewer);
+		end
+		if interactive
+			fprintf(2,'WARNING: No interactive mode!');
+		end
+	case 'pdfc'
+		fprintf(gp,'\nset out\n');
+		fprintf(gp,'set term pop\n\n');
 		if plotit > 1
 			fprintf(gp,'system "%s ".(pdffile)." &"\n',gp_pdfviewer);
 		else
