@@ -167,6 +167,25 @@ else
 		if interactive
 			fprintf(2,'WARNING: No interactive mode!');
 		end
+	case 'pdfx'
+		fprintf(gp,'\nset out\n');
+		fprintf(gp,'set term pop\n');
+		fprintf(gp,'\n### output files\n\n');
+		fprintf(gp,'PDF = FNAME.".pdf"\n');
+		fprintf(gp,'\n### generate PDF, clean up\n\n');
+		fprintf(gp,'system "%s ".FNAME.".tex"\n',gp_pdflatex);
+		fprintf(gp,'system "rm -f ".FNAME.".tex ".FNAME.".aux ".FNAME.".log ".FNAME."-inc.pdf "\n');
+		fprintf(gp,'\n### transform image\n\n');
+		fprintf(gp,'# system "%s ".PDF." ".PDF\n',gp_pdfcrop);
+		fprintf(gp,'\n### display image\n\n');
+		if plotit > 1
+			fprintf(gp,'system "%s ".PDF." &"\n',gp_pdfviewer);
+		else
+			fprintf(gp,'# system "%s ".PDF." &"\n',gp_pdfviewer);
+		end
+		if interactive
+			fprintf(2,'WARNING: No interactive mode!');
+		end
 	otherwise
 		error('gp_plot: unknown terminal type');
 	end
