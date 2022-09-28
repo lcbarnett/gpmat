@@ -16,27 +16,33 @@ end
 assert(size(y,1) == length(x),'x and y must match');
 
 ncols = size(y,2);
+nolegend = false;
 if nargin < 3 || isempty(legend)
 	legend = cell(1,ncols);
 	for c = 1:ncols
 		legend{c} = sprintf('y%d',c);
 	end
 else
-	if ischar(legend)
-		legend = cellstr(legend);
+	if isnumeric(legend) && isscalar(legend)
+		assert(legend == 0,'Legend must be a string, a cell string, or 0 for no legend');
+		nolegend = true;
 	else
-		assert(iscellstr(legend),'legend must be a string or cell string');
-	end
-	if iscolumn(legend), legend = legend'; end
-	nlabs = length(legend);
-	if nlabs < ncols
-		fprintf(2,'WARNING: too few legends\n');
-		legend = [legend cell(1,ncols-nlabs)];
-		for c = nlabs+1:ncols
-			legend{c} = sprintf('y%d',c);
+		if ischar(legend)
+			legend = cellstr(legend);
+		else
+			assert(iscellstr(legend),'Legend must be a string, a cell string, or 0 for no legend');
 		end
-	elseif nlabs > ncols
-		fprintf(2,'WARNING: too many legends\n');
+		if iscolumn(legend), legend = legend'; end
+		nlabs = length(legend);
+		if nlabs < ncols
+			fprintf(2,'WARNING: too few legends\n');
+			legend = [legend cell(1,ncols-nlabs)];
+			for c = nlabs+1:ncols
+				legend{c} = sprintf('y%d',c);
+			end
+		elseif nlabs > ncols
+			fprintf(2,'WARNING: too many legends\n');
+		end
 	end
 end
 
@@ -87,9 +93,16 @@ fprintf(gp,'set xlabel "x"\n');
 fprintf(gp,'set ylabel "y" norot\n');
 fprintf(gp,gp_pre);
 fprintf(gp,'plot \\\n');
-for c = 1:ncols
-    fprintf(gp,'\tdatfile u 1:%d w %s ls %d t "%s"',c+1,gp_ls,c,legend{c});
-    if c < ncols, fprintf(gp,', \\\n'); else, fprintf(gp,'\n'); end
+if nolegend
+	for c = 1:ncols
+		fprintf(gp,'\tdatfile u 1:%d w %s ls %d not',c+1,gp_ls,c);
+		if c < ncols, fprintf(gp,', \\\n'); else, fprintf(gp,'\n'); end
+	end
+else
+	for c = 1:ncols
+		fprintf(gp,'\tdatfile u 1:%d w %s ls %d t "%s"',c+1,gp_ls,c,legend{c});
+		if c < ncols, fprintf(gp,', \\\n'); else, fprintf(gp,'\n'); end
+	end
 end
 fprintf(gp,gp_post);
 

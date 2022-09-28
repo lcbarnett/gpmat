@@ -1,0 +1,38 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2021 The MathWorks, Inc.
+             R2021a Update 4 (9.10.0.1710957) 64-bit (glnxa64)
+                                July 1, 2021
+
+ 
+For online documentation, see https://www.mathworks.com/support
+For product information, visit www.mathworks.com.
+ 
+[gpmat startup] Initialising toolbox
+[gpmat startup] Setting user configuration options
+
+BBB =
+
+     0
+
+
+AAA =
+
+     0
+
+
+AAA =
+
+     1
+
+
+BBB =
+
+     1
+
+[gpmat startup] Getting screen size
+[gpmat startup] Screen size = 2560x1440 pixels, DPI = 96x96
+[gpmat startup] Paths set
+[gpmat startup] Initialisation complete (you may re-run 'startup' at any time)
+hi there
+>> 
