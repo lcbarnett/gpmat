@@ -23,14 +23,19 @@ if nargin < 3 || isempty(legend)
 		legend{c} = sprintf('y%d',c);
 	end
 else
-	if isnumeric(legend) && isscalar(legend)
-		assert(legend == 0,'Legend must be a string, a cell string, or 0 for no legend');
-		nolegend = true;
+	if isscalar(legend) && (islogical(legend) || isnumeric(legend))
+		nolegend = ~legend;
+		if legend
+			legend = cell(1,ncols);
+			for c = 1:ncols
+				legend{c} = sprintf('y%d',c);
+			end
+		end
 	else
 		if ischar(legend)
 			legend = cellstr(legend);
 		else
-			assert(iscellstr(legend),'Legend must be a string, a cell string, or 0 for no legend');
+			assert(iscellstr(legend),'Legend must be a string, a cell string, or a logical scalar');
 		end
 		if iscolumn(legend), legend = legend'; end
 		nlabs = length(legend);
