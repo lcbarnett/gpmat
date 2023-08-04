@@ -22,8 +22,8 @@ if xterm
 	screensize = gp_screensize.pixels./gp_screensize.dpi; % inches
 else
 	switch term
-		case {'x11', 'png','svg','wxt','qt'}, screensize = gp_screensize.pixels;
-		case {'eps','pdf','pdfc','pdfx'    }, screensize = gp_screensize.pixels./gp_screensize.dpi; % inches
+		case {'x11', 'png','svg', 'wxt', 'qt'  }, screensize = gp_screensize.pixels;
+		case {'eps', 'pdf','pdfc','pdfx','pdfp'}, screensize = gp_screensize.pixels./gp_screensize.dpi; % inches
 		otherwise, error('Bad terminal specification');
 	end
 end
@@ -131,6 +131,10 @@ else
 		fprintf(gp,'set out pdffile\n\n');
 	case 'pdfx'
 		fprintf(gp,'set term cairolatex pdf standalone colortext color font "default,%d" size %f,%f\n\n',fs,xsize,ysize);
+		fprintf(gp,'FNAME = "%s"\n\n',fname);
+		fprintf(gp,'set out FNAME.".tex"\n\n');
+	case 'pdfp'
+		fprintf(gp,'set term cairolatex png standalone colortext color font "default,%d" size %f,%f resolution 96\n\n',fs,xsize,ysize);
 		fprintf(gp,'FNAME = "%s"\n\n',fname);
 		fprintf(gp,'set out FNAME.".tex"\n\n');
 	case ''
