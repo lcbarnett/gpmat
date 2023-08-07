@@ -19,9 +19,6 @@ if nargin < 5 || isempty(interactive)
 	interactive = false;
 end
 
-pdfp =  strcmpi(term,'pdfp');
-if pdfp, term = 'pdfx'; end
-
 term = lower(term);
 xterm = isequal(term([1 2]),'x-');
 
@@ -170,14 +167,14 @@ else
 		if interactive
 			fprintf(2,'WARNING: No interactive mode!');
 		end
-	case 'pdfx'
+	case {'pdfx','pdfz','pdfp'}
 		fprintf(gp,'\nset out\n');
 		fprintf(gp,'set term pop\n');
 		fprintf(gp,'\n### output files\n\n');
 		fprintf(gp,'PDF = FNAME.".pdf"\n');
 		fprintf(gp,'\n### generate PDF, clean up\n\n');
 		fprintf(gp,'system "%s ".FNAME.".tex"\n',gp_pdflatex);
-		if pdfp
+		if strcmp(term,'pdfp');
 			fprintf(gp,'system "rm -f ".FNAME.".tex ".FNAME.".aux ".FNAME.".log ".FNAME."-inc.png "\n');
 		else
 			fprintf(gp,'system "rm -f ".FNAME.".tex ".FNAME.".aux ".FNAME.".log ".FNAME."-inc.pdf "\n');
