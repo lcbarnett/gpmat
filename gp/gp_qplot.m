@@ -66,7 +66,7 @@ if nargin >= 4 && ~isempty(gpcmds)
 			end
 		end
 	else
-		error('Gnuplot commands must be a string or a string');
+		error('Gnuplot commands must be a string or a cell string');
 	end
 end
 
