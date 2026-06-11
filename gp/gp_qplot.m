@@ -98,6 +98,7 @@ fprintf(gp,'set xlabel "x"\n');
 fprintf(gp,'set ylabel "y" norot\n');
 fprintf(gp,gp_pre);
 fprintf(gp,'plot \\\n');
+
 if nolegend
 	for c = 1:ncols
 		fprintf(gp,'\tdatfile u 1:%d w %s ls %d not',c+1,gp_ls,c);
